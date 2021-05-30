@@ -36,3 +36,55 @@
     transform: rotate(360deg);
   }
 }
+
+.container{
+  width: 100vw;
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+}
+
+.first-content{
+  width: 100vw;
+  display:flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.menu{
+  display:flex;
+  flex-direction: column;
+}
+
+
+.escenario{
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  height: 100px;
+  width:200px;
+  background-color: blue;
+}
+
+.personaje{
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  height: 100px;
+  width:200px;
+  background-color: blue;
+}
+
+.hidden{
+  display: none;
+}
+
+.imageFromBD{
+  border:solid;
+}
