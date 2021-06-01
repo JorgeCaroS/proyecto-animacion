@@ -92,7 +92,7 @@
 .canvas-wraper{
   display:flex;
   flex-direction: column;
-  background-color: black;
+  background-color: white;
   justify-content: center;
   align-items: center;
 }

@@ -269,12 +269,19 @@ export default function Home() {
   }
 
   const draw = (context) => {
+    img1.current.crossOrigin = "Anonymous";
+    img2.current.crossOrigin = "Anonymous";
     // Insert your canvas API code to draw an image
     context.drawImage(img1.current, 0, 0);
     context.clearRect(0, 0, 0, 0);
     context.drawImage(img2.current, posX, posY, 45, 80);
+    //context.fillRect(25,25,100,100);
+    //context.fillStyle = 'green';
+   
     
   };
+
+  
 
   
   
@@ -291,7 +298,7 @@ export default function Home() {
             className="hidden"
             id="img1"
             ref={img1}
-            src="http://localhost:3000/escenario/desierto.jpg"
+            src={escenarioImg}
             width="600px"
             height="300px"
           />
