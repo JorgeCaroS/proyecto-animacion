@@ -34,6 +34,7 @@ import CharF6 from "../sprites/femenino/Run__006.png";
 import CharF7 from "../sprites/femenino/Run__007.png";
 
 export default function Home() {
+  const video = React.useRef();
   const history = useHistory();
   const [user, setUser] = useState([]);
   const [escenario, setEscenario] = useState([]);
@@ -86,6 +87,7 @@ export default function Home() {
   let mailRef = React.createRef();
   let escenarioRef = React.createRef();
   let imgRef = React.createRef();
+  let canvasRef = React.createRef();
   const [loading1, setLoading1] = useState(true);
 
   const img1 = useRef(null);
@@ -122,6 +124,7 @@ export default function Home() {
       console.log(data);
       setLoading1(false);
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      await setEscenarioImg("http://localhost:3000/escenario/desierto.jpg");
     }
 
     fetchData();
@@ -204,20 +207,20 @@ export default function Home() {
     }
   }
 
-  async function Jump(){
+  async function Jump() {
     var y2 = 200;
-    for(var i = 0 ; i < 6; i++){
-      if(i > 2){
+    for (var i = 0; i < 6; i++) {
+      if (i > 2) {
         y2 = y2 + 20;
         await delay(100);
         setPosY(y2);
-      }else{
+      } else {
         y2 = y2 - 20;
         await delay(100);
         setPosY(y2);
-       } 
-     }
-   }
+      }
+    }
+  }
 
   function handlePos(e) {
     if (char === "m") {
@@ -237,7 +240,6 @@ export default function Home() {
           if (e.key === "ArrowUp") {
             setCharImg(imagesMJ[counter]);
             Jump();
-                      
           }
         }
       }
@@ -270,9 +272,12 @@ export default function Home() {
     // Insert your canvas API code to draw an image
     context.drawImage(img1.current, 0, 0);
     context.clearRect(0, 0, 0, 0);
-    context.drawImage(img2.current, posX, posY, 45, 80);   
+    context.drawImage(img2.current, posX, posY, 45, 80);
     
   };
+
+  
+  
 
   return (
     <div className="container">
@@ -281,12 +286,12 @@ export default function Home() {
       <h2>Telefono: {user[2].phone}</h2> */}
       <div className="first-content">
         <div className="imageFromBD" tabIndex="0" onKeyDown={handlePos}>
-          <Canvas draw={draw} height={300} width={600} />
+          <Canvas id="canvas" draw={draw} height={300} width={600} ref={canvasRef} />
           <img
             className="hidden"
             id="img1"
             ref={img1}
-            src={escenarioImg}
+            src="http://localhost:3000/escenario/desierto.jpg"
             width="600px"
             height="300px"
           />
@@ -299,6 +304,8 @@ export default function Home() {
             height="90px"
           />
         </div>
+
+        
 
         <div className="menu">
           <div className="escenario" tabIndex="0" onKeyDown={handleStage}>
@@ -314,6 +321,7 @@ export default function Home() {
           <button onClick={handleReset}>Reset</button>
         </div>
       </div>
+      
 
       <br></br>
       <div className="audio-recorder">
@@ -330,6 +338,7 @@ export default function Home() {
         <audio src={"http://localhost:3000/audio/audio.weba"} controls />
       </div> */}
       <button onClick={handleHistorias}>Historias</button>
+      
     </div>
   );
 }
