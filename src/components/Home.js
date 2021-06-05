@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { useHistory } from "react-router-dom";
 import useRecorder from "./useRecorder";
 import Canvas from "./Canvas";
+import Wallpaper from "../images/wallpaper.jpg";
 
 import CharM0 from "../sprites/masculino/Run__000.png";
 import CharM1 from "../sprites/masculino/Run__001.png";
@@ -46,6 +47,7 @@ export default function Home() {
   const [myDraw, setMyDraw] = useState(0);
   const [counter, setCounter] = useState(0);
   const [archivo, setArchivo] = useState([]);
+  const [letter, setLetter] = useState([]);
   const [myText, setMyText] = useState("Prueba");
   const [imagesM, setImagesM] = useState([
     CharM0,
@@ -182,13 +184,16 @@ export default function Home() {
   function handleStage(e) {
     console.log(e.key);
     setEscenario(e.key);
-    if (e.key === "n") {
-      setEscenarioImg("http://localhost:3000/escenario/nieve.jpg");
-    } else {
-      if (e.key === "d") {
-        setEscenarioImg("http://localhost:3000/escenario/desierto.jpg");
+    if (e.key === "k") {
+      setEscenarioImg("http://localhost:3000/escenario/carro.jpg");
+    } else 
+      if (e.key === "p") {
+        setEscenarioImg("http://localhost:3000/escenario/parque.jpg");
       } else {
-        return alert("Escenarios disponibles con las letras N - D");
+      if (e.key === "c") {
+        setEscenarioImg("http://localhost:3000/escenario/casa.jpg");
+      } else {
+        return alert("Escenarios disponibles con las letras K - C - P");
       }
     }
   }
@@ -228,7 +233,7 @@ export default function Home() {
       if (counter === 7) {
         setCounter(0);
       }
-
+      //if (letter === "Q") {
       if (e.key === "ArrowRight") {
         setCharImg(imagesM[counter]);
         return setPosX(posX + 2);
@@ -281,14 +286,26 @@ export default function Home() {
     
   };
 
-  
+  function handleArduino(){
+    return fetch("http://localhost:3000/read/")
+    .then((response) => response.json())
+    .then((data) => setLetter(data));
+          
+  }
+
+ // handleArduino();
+ 
 
   
   
 
   return (
-    <div className="container">
-      <h2>Bienvenido {user[0].user}!</h2>
+    <div  className="con">
+      <img className="wallpaper" src={Wallpaper}/>
+      <div className="titles">
+      <h2 className="title">CREA UNA HISTORIA</h2>
+      {/* <h2 className="title">Letra {letter.letra}!</h2> */}
+      </div>
       {/* <h2>Correo: {user[1].mail}</h2>
       <h2>Telefono: {user[2].phone}</h2> */}
       <div className="first-content">
@@ -324,14 +341,15 @@ export default function Home() {
           <div className="personaje" tabIndex="0" onKeyDown={handleChar}>
             <h1>Personajes</h1>
           </div>
+          <br></br>
 
-          <button onClick={handleReset}>Reset</button>
+          <button  className="escenario1" onClick={handleReset}>Reset</button>
         </div>
       </div>
       
 
       <br></br>
-      <div className="audio-recorder">
+     {/*  <div className="audio-recorder">
         <audio src={audioURL} controls />
         <button onClick={startRecording} disabled={isRecording}>
           Grabar
@@ -339,7 +357,7 @@ export default function Home() {
         <button onClick={stopRecording} disabled={!isRecording}>
           Detener
         </button>
-      </div>
+      </div> */}
 
       {/* <div className="audioFromBD">
         <audio src={"http://localhost:3000/audio/audio.weba"} controls />

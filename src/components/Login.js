@@ -1,6 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import { useHistory, withRouter } from "react-router-dom";
+import Fondo from "../images/fondo.jpg";
 
 export default function Login() {
   const history = useHistory();
@@ -64,8 +65,12 @@ export default function Login() {
 
 
     return(
-        <div>
-            <form>
+        <div className="login-container">
+          
+          <img className="fondo-image" src={Fondo}/>
+          <h1 className="welcome-title">Bienvenido</h1>
+          
+            <form className="register-form">
             <h1> Registrarse</h1>
             <input className="login-nombre" placeholder="Nombre" ref={nameRef} required/>
             <br/>
@@ -78,7 +83,7 @@ export default function Login() {
             <button type="submit" onClick={handleReg} className="login-submit"> Registrarse</button>
             </form>
 
-            <form>
+            <form className="login-form">
             <h1> Login</h1>
             
             <input className="login-mail" placeholder="Correo"  ref={mail1Ref} required/>

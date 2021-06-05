@@ -1,17 +1,20 @@
 import React from 'react';
+import { useState } from "react";
 import PropTypes from 'prop-types';
+import useRecorder from "./useRecorder";
 
 const Canvas = ({draw, height, width}) => {
   const canvas = React.useRef();
   const video1 = React.useRef();
-  const video2 = React.useRef();
-
-  
+  const audio1 = React.useRef();
+  const [letter, setLetter] = useState([]);
+  let [audioURL, isRecording, startRecording, stopRecording] = useRecorder();
 
   function canvasRecording() {
 
      var videoStream = canvas.current.captureStream(30);
-     var mediaRecorder = new MediaRecorder(videoStream)
+     var mediaRecorder = new MediaRecorder(videoStream);   
+     
 
       var chunks = [];
       mediaRecorder.ondataavailable = function(e) {
@@ -19,7 +22,7 @@ const Canvas = ({draw, height, width}) => {
       };
 
       mediaRecorder.onstop = function(e) {
-        var blob = new Blob(chunks, { 'type' : 'video/mp4' });
+        var blob = new Blob(chunks, { 'type' : 'video/mp4;codecs=vp9' });
         chunks = [];
         var videoURL = URL.createObjectURL(blob);
         video1.current.src = videoURL;
@@ -30,28 +33,9 @@ const Canvas = ({draw, height, width}) => {
 
       mediaRecorder.start();
      
-      setTimeout(function (){ mediaRecorder.stop(); }, 10000);
+       setTimeout(function (){ mediaRecorder.stop(); }, 30000); 
 
-/*
-    const chunks = []; // here we will store our recorded media chunks (Blobs)
-    const stream = canvas.current.captureStream(25); // grab our canvas MediaStream
-    const rec = new MediaRecorder(stream); // init the recorder
-    video1.current.srcObject = stream;
-    // every time the recorder has new data, we will store it in our array
-    rec.ondataavailable = e => chunks.push(e.data) ;
-    console.log(stream)
-    // only when the recorder stops, we construct a complete Blob from all the chunks
-    rec.onstop = e => exportVid(new Blob(chunks, {'type' : 'video/mp4' }));
-    
-    rec.start();
-    setTimeout(()=>rec.stop(), 5000); // stop recording in 3s
 
-    video1.current.onplay = function() {
-      // Set the source of one <video> element to be a stream from another.
-      var stream1 = video1.current.captureStream();
-      video2.current.srcObject = stream1;
-    };
-    */
   }
 
   
@@ -79,16 +63,44 @@ const Canvas = ({draw, height, width}) => {
     draw(context);
     
   });
+
+  function handlePlay(){
+    video1.current.play();
+    audio1.current.play();
+  }
+
+  /* function handleArduino(){
+    return fetch("http://localhost:3000/read/")
+    .then((response) => response.json())
+    .then((data) => setLetter(data));
+          
+  } */
+
   return (
-    <div className="canvas-wraper">
+    <div className="canvas-wraper">      
     <canvas id="canvas" ref={canvas} height={height} width={width} />
-    <button onClick={canvasRecording}>Grabar</button>
-      <div>
-      <video className="myVideo"id="video1" ref={video1} height="400px" width="400px" controls />
+    <div className="buttons">
+    <button onClick={canvasRecording}>Grabar Video</button>
+    <button >Detener Video</button>
+    </div>
+    <br></br>
+    <div className="audio-recorder">
+        <audio ref={audio1} src={audioURL}  />
+        <button onClick={startRecording} disabled={isRecording}>
+          Grabar Audio
+        </button>
+        <button onClick={stopRecording} disabled={!isRecording}>
+          Detener
+        </button>
       </div>
+      <br></br>
       <div>
-      <video className="myVideo"id="video2" ref={video2} height="400px" width="400px" controls />
+      <video className="myVideo"id="video1" ref={video1} height="400px" width="400px"  />
       </div>
+      <button onClick={handlePlay}>Play</button>
+      {/* <button onClick={handleArduino}>Arduino</button> */}
+        
+
     </div>
   );
 };
